@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="EUC-KR">
+	<title>Insert title here</title>
+	
+	<script type="text/javascript"  src="/Ajax/10common/ajaxUtil01.js"></script>
+	<script type="text/javascript">
+	
+	
+		
+		//XMLHttpRequest객체 생성하는 function
+	 	function getCustomerInfo(){
+	 		createRequest();
+	 		
+	 		var name = document.getElementById("name").value;
+	 		var phone = document.getElementById("phone").value;
+	 		var url = "post-orderServer.jsp";
+	 		
+	 		
+	 		request.open("POST",url,true);
+	 		request.onreadystatechange = updatePage;
+
+	 		request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	 		
+	 		var queryString = "name="+name+"&phone="+phone;
+	 		
+	 		alert(queryString);
+	 		request.send(queryString);
+	 		
+		}
+		
+		function updatePage(){
+			
+			if(request.readyState == 4){
+				if(request.status == 200){
+					
+					var serverData = request.responseText;
+					var displayValue = trim(serverData);
+					alert("Server에서 받은 내용:\n"+displayValue);
+					
+					document.getElementById("address").value = displayValue;
+				}else{
+					alert("에러 발생:"+request.status);
+				}
+			}
+		}
+		
+		function trim(str){
+			return str.replace(/^\S\S*/,").replace(/\s\s*$/,");
+		}	
+	 
+	
+	</script>
+</head>
+
+<body onload="document.forms[0].reset()">
+
+	<form>
+	
+		<p>이 &nbsp;&nbsp;&nbsp;&nbsp; 름  :  
+				<input type="text" size="14" name="name"  id ="name"/>
+		</p>
+		
+		<p>전화번호 :  
+				<input type="text" size="14" name="phone"  id="phone"/>
+		</p>
+	
+		<p>주 &nbsp;&nbsp;&nbsp;&nbsp; 소 : </p>  
+	
+		<p>
+			<textarea 	rows="3" cols="50" name="address" id="address" 
+								onclick="javascript:getCustomerInfo()" >이름을 입력후 :: 여기에click...</textarea>	
+		</p>
+				
+		<p><input type="submit" value="주문하기" id="submit"/></p>
+		
+	</form>
+	
+</body>
+
+</html>
